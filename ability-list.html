@@ -1,0 +1,110 @@
+<script>
+  function onRoll() {
+    const name = data.name;
+    let value = data.data.value;
+    if (value === undefined) {
+      value = 0;
+    }
+
+    const roll = data.data.roll;
+    const addSubValue = data.data.addSubValue;
+    const addSubAttr = data.data.addSubAttr;
+    const attribute = data.data.attribute;
+    let attributeVal = 0;
+    if (attribute) {
+      // Find the attribute with that name if any
+      let attributeData;
+      const attrs = record.data?.attributes_list || [];
+      attrs.forEach((attr) => {
+        if (attr.name === attribute) {
+          attributeVal = parseInt(attr.data.value, 10);
+        }
+      });
+      if (isNaN(attributeVal) || attributeVal === undefined) {
+        attributeVal = 0;
+      }
+    }
+    let modifiers = [];
+    if (addSubValue === "Add Value") {
+      modifiers.push({
+        name: name,
+        type: "value",
+        value: value,
+        active: true,
+      });
+    } else if (addSubValue === "Subtract Value") {
+      modifiers.push({
+        name: name,
+        type: "value",
+        value: value * -1,
+        active: true,
+      });
+    }
+    if (addSubAttr === "Add Attribute") {
+      modifiers.push({
+        name: attribute,
+        type: "attribute",
+        value: attributeVal,
+        active: true,
+      });
+    } else if (addSubAttr === "Subtract Attribute") {
+      modifiers.push({
+        name: attribute,
+        type: "attribute",
+        value: attributeVal * -1,
+        active: true,
+      });
+    }
+
+    const dataPathToAbility = dataPath.replace(".rollBtn", "");
+    const abilityData = api.getValue(dataPathToAbility);
+    const animation = abilityData?.animation;
+
+    const ourTokenId = api.getToken()?._id;
+    const targets = api.getTargets();
+    let targetId = undefined;
+    if (targets && targets.length > 0) {
+      targetId = targets[0].token?._id;
+    }
+    const metadata = {
+      animation: animation && animation.animationName ? animation : undefined,
+      tokenId: ourTokenId,
+      targetId: targetId,
+    };
+
+    if (roll) {
+      api.promptRoll(
+        `Ability (${name})`,
+        `${roll}`,
+        modifiers,
+        metadata,
+        "ability"
+      );
+    }
+  }
+</script>
+
+<div style="height: 30px; display: flex">
+  <portrait name="portrait" width="30px" height="30px"></portrait>
+  <div style="flex-grow: 1; margin-left: 4px">
+    <namefield field="namefield" size="xs" variant="tooltip"></namefield>
+  </div>
+  <div style="margin-left: 4px">
+    <numberfield
+      field="value"
+      size="xs"
+      label="Value"
+      variant="tooltip"
+    ></numberfield>
+  </div>
+  <div style="margin-left: 4px; margin-top: auto; margin-bottom: auto">
+    <iconbutton
+      size="sm"
+      field="rollBtn"
+      variant="default"
+      options='[{"icon": "IconDice", "label": "Roll", "value": "roll"}]'
+      onchange=""
+      onclick="onRoll();"
+    ></iconbutton>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<script>
+  function showHideValues(typeStr) {
+    if (typeStr === "weapon") {
+      api.setHidden(["damage", "animations"], false);
+    } else {
+      api.setHidden(["damage", "animations"], true);
+    }
+  }
+
+  function onLoad() {
+    if (
+      record?.data?.type === "weapon" &&
+      record?.data?.fields?.weapon?.hidden === undefined
+    ) {
+      api.setHidden("animations", false);
+    }
+  }
+</script>
+
+<div style="display: flex; flex-direction: row">
+  <div
+    style="
+      height: 75px;
+      width: 75px;
+      max-width: 75px;
+      min-width: 75px;
+      max-height: 75px;
+      min-height: 75px;
+    "
+  >
+    <portrait field="portrait"></portrait>
+  </div>
+  <div style="margin-left: 8px; width: 100%; margin-right: 4px">
+    <stringfield
+      field="description"
+      label="Description"
+      placeholder="Enter description..."
+      multiline="true"
+      maxrows="4"
+    ></stringfield>
+  </div>
+</div>
+<div style="display: flex; margin-top: 8px">
+  <div style="">
+    <numberfield width="80px" field="weight" label="Weight"></numberfield>
+  </div>
+  <div style="margin-left: 4px; margin-right: 4px; width: 100%">
+    <dropdown
+      multiselect="1"
+      placeholder="Select Type"
+      onload="onLoad();"
+      onchange="showHideValues(value);"
+      field="type"
+      label="Type"
+      options='[{"label": "Gear", "value": "gear"}, {"label": "Weapon", "value": "weapon"}]'
+    ></dropdown>
+  </div>
+  <div>
+    <stringfield hidden="true" field="damage" label="Damage"></stringfield>
+  </div>
+</div>
+
+<box field="animations" hidden="true">
+  <div style="margin-top: 8px">
+    <fxcontrol field="animation" label="Attack Animation"></fxcontrol>
+  </div>
+</box>

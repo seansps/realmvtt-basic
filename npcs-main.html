@@ -1,0 +1,87 @@
+<script>
+  function rollInit() {
+    const initRoll = record.data?.initRoll;
+    if (initRoll) {
+      api.roll(initRoll, {}, "initiative");
+    }
+  }
+</script>
+
+<div style="display: flex; margin-top: 4px; flex-direction: row">
+  <div style="display: flex; flex-direction: column">
+    <div
+      style="
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        height: 100px;
+        min-height: 100px;
+        max-height: 100px;
+      "
+    >
+      <portrait width="100px" height="100px"></portrait>
+    </div>
+  </div>
+
+  <div
+    style="margin-left: 8px; display: flex; flex-direction: column; gap: 8px"
+  >
+    <div style="display: flex; gap: 8px">
+      <numberfield field="curhp" label="HP"></numberfield>
+      <numberfield field="hitpoints" label="Max HP"></numberfield>
+    </div>
+
+    <div>
+      <stringfield field="title" placeholder="Type"></stringfield>
+    </div>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: row; margin-top: 8px; gap: 8px">
+  <div style="width: 50%">
+    <stringfield field="senses" placeholder="Senses"></stringfield>
+  </div>
+  <div style="width: 50%">
+    <stringfield field="size" placeholder="Size"></stringfield>
+  </div>
+</div>
+
+<div style="display: flex; margin-top: 8px; flex-direction: row; gap: 8px">
+  <numberfield
+    width="100px"
+    field="xp"
+    label="XP"
+    placeholder="0"
+  ></numberfield>
+
+  <div style="margin-left: 8px">
+    <stringfield
+      onclick="rollInit();"
+      field="initRoll"
+      label="Initiative Roll"
+      placeholder="Dice string..."
+    ></stringfield>
+  </div>
+
+  <div style="margin-top: auto">
+    <button
+      field="rollInitBtn"
+      icon="IconDice"
+      label="Roll"
+      variant="outlined"
+      color="primary"
+      onclick="rollInit();"
+    ></button>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: column; flex-grow: 1">
+  <div style="height: 100%; width: 100%; margin-top: 8px">
+    <list
+      listtype="attributes_list"
+      field="attributes_list"
+      variant="standard"
+      label="Attributes"
+    ></list>
+  </div>
+</div>

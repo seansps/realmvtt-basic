@@ -1,0 +1,92 @@
+<script>
+  function rollInit() {
+    const initRoll = record.data?.initRoll;
+    const modifiers = [];
+    if (initRoll) {
+      const metadata = {
+        isCharacter: true,
+      };
+      api.promptRoll("Initiative", initRoll, modifiers, metadata, "initiative");
+    }
+  }
+</script>
+
+<div style="display: flex; margin-top: 4px; flex-direction: row">
+  <div style="display: flex; flex-direction: column">
+    <div
+      style="
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+        min-height: 150px;
+        height: 150px;
+        max-height: 150px;
+      "
+    >
+      <portrait width="150px" height="150px"></portrait>
+    </div>
+  </div>
+
+  <div
+    style="margin-left: 8px; display: flex; flex-direction: column; gap: 8px"
+  >
+    <div style="display: flex; gap: 8px">
+      <div>
+        <numberfield field="curhp" label="Hit Points" placeholder="0">
+        </numberfield>
+      </div>
+
+      <div>
+        <numberfield field="hitpoints" label="Max Hit Points" placeholder="0">
+        </numberfield>
+      </div>
+    </div>
+
+    <div style="width: 100%">
+      <stringfield
+        field="title"
+        placeholder="Class / Title  Level"
+      ></stringfield>
+    </div>
+
+    <div style="display: flex; flex-direction: row; gap: 4px">
+      <stringfield field="senses" placeholder="Senses"></stringfield>
+      <stringfield field="size" placeholder="Size"></stringfield>
+    </div>
+  </div>
+</div>
+
+<div style="display: flex; flex-direction: row">
+  <div style="width: 150px">
+    <numberfield field="xp" label="XP" placeholder="0"></numberfield>
+  </div>
+
+  <div style="margin-left: 8px">
+    <stringfield
+      onclick="rollInit();"
+      field="initRoll"
+      label="Initiative Roll"
+      placeholder="Enter dice string..."
+    ></stringfield>
+  </div>
+
+  <div style="margin-left: 8px; margin-top: auto">
+    <button
+      field="rollInitBtn"
+      icon="IconDice"
+      label="Roll"
+      onclick="rollInit();"
+    ></button>
+  </div>
+</div>
+
+<div
+  style="display: flex; margin-top: 8px; flex-direction: column; flex-grow: 1"
+>
+  <list
+    listtype="attributes_list"
+    field="attributes_list"
+    variant="standard"
+    label="Attributes"
+  ></list>
+</div>

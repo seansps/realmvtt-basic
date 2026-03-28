@@ -1,0 +1,46 @@
+<script>
+  function setTotalWeight() {
+    // Fetch the character record again to get latest data
+    const items = record.data?.inventory_list || [];
+    let totalWeight = 0;
+    items.forEach((item) => {
+      let weight = parseFloat(item.data?.weight || "0");
+      let count = parseFloat(item.data?.count || "0");
+      if (count === undefined || isNaN(count)) {
+        count = 0;
+      }
+      if (weight !== undefined && !isNaN(weight)) {
+        totalWeight += weight * count;
+      }
+    });
+    api.setValue("data.totalWeight", totalWeight);
+  }
+</script>
+
+<div style="height: 30px; display: flex">
+  <div style="width: 30px; min-width: 30px">
+    <portrait width="30px" height="30px" name="portrait"></portrait>
+  </div>
+  <div style="margin-left: 4px; width: 60px">
+    <numberfield
+      size="xs"
+      variant="tooltip"
+      label="Count"
+      field="count"
+      onchange="setTotalWeight();"
+    ></numberfield>
+  </div>
+  <div style="margin-left: 4px; flex-grow: 1">
+    <namefield size="xs" variant="tooltip" label="Name" field="namefield" />
+  </div>
+  <div style="margin-left: 4px; margin-top: auto; margin-bottom: auto">
+    <iconbutton
+      size="sm"
+      field="carried"
+      variant="default"
+      options='[{"icon": "IconMoneybag", "label": "Carried", "value": "carried"}, {"icon": "IconShirt", "label": "Equipped", "value": "equipped"}, {"icon": "IconArrowDown", "label": "Dropped", "value": "dropped"}]'
+      onchange=""
+      onclick=""
+    ></iconbutton>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+<script>
+  function handleRoll() {
+    const name = data.name;
+    const atkRoll = record.data.atkRoll || "";
+    const modifiers = [];
+
+    const dataPathToAttack = dataPath.replace(".rollBtn", "");
+    const attackData = api.getValue(dataPathToAttack);
+    const animation = attackData?.animation;
+
+    (record?.effects || []).forEach((eff) => {
+      eff.rules.forEach((rule) => {
+        if (rule.type === "attack_bonus") {
+          let baseValue = parseInt(rule.value, 10);
+          let adjustedValue = baseValue;
+          if (rule.valueType === "stack") {
+            adjustedValue = record.effectIds.reduce((count, current) => {
+              return count + (current === eff._id ? 1 : 0);
+            }, 0);
+          }
+          let mod = {
+            name: eff.name,
+            value: adjustedValue,
+            active: true,
+          };
+          modifiers.push(mod);
+        } else if (rule.type === "attack_penalty") {
+          let baseValue = parseInt(rule.value, 10);
+          let adjustedValue = baseValue;
+          if (rule.valueType === "stack") {
+            adjustedValue = record.effectIds.reduce((count, current) => {
+              return count + (current === eff._id ? 1 : 0);
+            }, 0);
+          }
+          if (adjustedValue > 0) {
+            adjustedValue *= -1;
+          }
+          let mod = {
+            name: eff.name,
+            value: adjustedValue,
+            active: true,
+          };
+          modifiers.push(mod);
+        }
+      });
+    });
+
+    if (atkRoll) {
+      const ourTokenId = api.getToken()?._id;
+      const targets = api.getTargets();
+      let targetId = undefined;
+      if (targets && targets.length > 0) {
+        targetId = targets[0].token?._id;
+      }
+      api.promptRoll(
+        `Attack (${name})`,
+        atkRoll,
+        modifiers,
+        {
+          animation:
+            animation && animation.animationName ? animation : undefined,
+          tokenId: ourTokenId,
+          targetId: targetId,
+        },
+        "attack"
+      );
+    }
+  }
+
+  function getDamageType(rollString) {
+    const regex = /(\d+d\d+)(?:\s*\+\s*\d+)?(?:\s+(\w+))?/;
+    const match = rollString.match(regex);
+    return match && match[2] ? match[2] : "untyped";
+  }
+
+  function rollDamage() {
+    const dmgRoll = data.data.damage;
+    const name = data.name;
+
+    const damage = data.data?.damage || "";
+    const damageType = getDamageType(damage);
+
+    const modifiers = [];
+
+    (record?.effects || []).forEach((eff) => {
+      eff.rules.forEach((rule) => {
+        if (rule.type === "damage_bonus") {
+          let baseValue = parseInt(rule.value, 10);
+          let adjustedValue = baseValue;
+          if (rule.valueType === "stack") {
+            adjustedValue = record.effectIds.reduce((count, current) => {
+              return count + (current === eff._id ? 1 : 0);
+            }, 0);
+          }
+          let mod = {
+            name: eff.name,
+            type: damageType,
+            value: adjustedValue,
+            active: true,
+          };
+          modifiers.push(mod);
+        } else if (rule.type === "damage_penalty") {
+          let baseValue = parseInt(rule.value, 10);
+          let adjustedValue = baseValue;
+          if (rule.valueType === "stack") {
+            adjustedValue = record.effectIds.reduce((count, current) => {
+              return count + (current === eff._id ? 1 : 0);
+            }, 0);
+          }
+          if (adjustedValue > 0) {
+            adjustedValue *= -1;
+          }
+          let mod = {
+            name: eff.name,
+            type: damageType,
+            value: adjustedValue,
+            active: true,
+          };
+          modifiers.push(mod);
+        }
+      });
+    });
+
+    api.promptRoll(`Damage (${name})`, dmgRoll, modifiers, {}, "damage");
+  }
+</script>
+
+<div style="height: 30px; display: flex">
+  <div style="min-width: 30px; min-height: 30px">
+    <portrait name="portrait" width="30px" height="30px"></portrait>
+  </div>
+  <div style="margin-left: 4px; width: 100%">
+    <namefield label="Name" size="xs" variant="tooltip" field="namefield" />
+  </div>
+  <div style="margin-left: 4px; margin-top: auto; margin-bottom: auto">
+    <iconbutton
+      field="rollBtn"
+      color="default"
+      options='[{"icon": "IconDice", "label": "Roll Attack", "value": "roll"}]'
+      onchange="() => { }"
+      onclick="handleRoll();"
+    ></iconbutton>
+  </div>
+  <div style="margin-left: 4px">
+    <button
+      size="xs"
+      field="button"
+      label="Damage"
+      variant="outlined"
+      color="primary"
+      onclick="rollDamage();"
+    ></button>
+  </div>
+</div>
