@@ -1,0 +1,60 @@
+<div
+  class="sheet--spread"
+  style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px"
+>
+  <!-- ===== ATTACKS ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label">&#10022; Attacks &#10022;</span>
+    </div>
+
+    <stringfield
+      field="atkRoll"
+      label="Attack Roll"
+      size="xs"
+      placeholder="Enter dice string..."
+    ></stringfield>
+
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        margin-top: 8px;
+        flex-grow: 1;
+      "
+    >
+      <list
+        listtype="attack_list"
+        radius="none"
+        variant="striped-outline"
+        field="inventory_list"
+      ></list>
+    </div>
+  </div>
+
+  <!-- ===== ABILITIES ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label">&#10022; Abilities &#10022;</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; flex-grow: 1">
+      <list
+        listtype="ability_list"
+        radius="none"
+        variant="striped-outline"
+        field="ability_list"
+      ></list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<script>
+  function setTotalWeight() {
+    // Fetch the character record again to get latest data
+    const items = record.data?.inventory_list || [];
+    let totalWeight = 0;
+    items.forEach((item) => {
+      let weight = parseFloat(item.data?.weight || "0");
+      let count = parseFloat(item.data?.count || "0");
+      if (count === undefined || isNaN(count)) {
+        count = 0;
+      }
+      if (weight !== undefined && !isNaN(weight)) {
+        totalWeight += weight * count;
+      }
+    });
+    api.setValue("data.totalWeight", totalWeight);
+  }
+</script>
+
+<div
+  class="sheet--spread"
+  style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px"
+>
+  <!-- ===== INVENTORY ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label">&#10022; Inventory &#10022;</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; flex-grow: 1">
+      <list
+        listtype="inventory_list"
+        radius="none"
+        variant="striped-outline"
+        field="inventory_list"
+        label="Inventory"
+        onchange="setTotalWeight();"
+      ></list>
+    </div>
+  </div>
+
+  <!-- ===== TOTALS ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label"
+        >&#10022; Weight &amp; Currency &#10022;</span
+      >
+    </div>
+
+    <div style="display: flex; gap: 8px; align-items: flex-end">
+      <numberfield
+        size="xs"
+        placeholder="0"
+        field="totalWeight"
+        label="Total Weight"
+        width="50%"
+      ></numberfield>
+      <numberfield
+        size="xs"
+        placeholder="0"
+        field="currency"
+        label="Currency"
+        width="50%"
+      ></numberfield>
+    </div>
+  </div>
+</div>

@@ -11,82 +11,178 @@
   }
 </script>
 
-<div style="display: flex; margin-top: 4px; flex-direction: row">
-  <div style="display: flex; flex-direction: column">
+<!-- Basic ruleset — system-agnostic. Uses the shared sheet primitives so
+     the sheet picks up whatever chrome the active theme provides
+     (Grimoire L-brackets on Occult/Dark/Light, neutral fallbacks on
+     plain Mantine). Single-column flow; no two-page spread. -->
+<div
+  class="sheet--spread"
+  style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px"
+>
+  <!-- ===== HEADER ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div style="display: flex; align-items: center; gap: 14px">
+      <portrait variant="fancy" width="120px" height="120px"></portrait>
+      <div
+        style="
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        "
+      >
+        <label field="namefield" class="rvtt-sheet-display-name"></label>
+        <stringfield
+          field="title"
+          placeholder="Class / Title / Level"
+          class="rvtt-sheet-class-line"
+          width="100%"
+        ></stringfield>
+        <div
+          style="display: flex; gap: 10px; align-items: center; margin-top: 2px"
+        >
+          <span class="rvtt-sheet-mono-dim">XP</span>
+          <numberfield
+            field="xp"
+            size="xs"
+            hidecontrols="true"
+            width="80px"
+            placeholder="0"
+          ></numberfield>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VITALS ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label">&#10022; Vitals &#10022;</span>
+    </div>
+
     <div
       style="
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-        min-height: 150px;
-        height: 150px;
-        max-height: 150px;
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 8px;
+        align-items: stretch;
       "
     >
-      <portrait width="150px" height="150px"></portrait>
-    </div>
-  </div>
-
-  <div
-    style="margin-left: 8px; display: flex; flex-direction: column; gap: 8px"
-  >
-    <div style="display: flex; gap: 8px">
-      <div>
-        <numberfield field="curhp" label="Hit Points" placeholder="0">
-        </numberfield>
+      <!-- HP card -->
+      <div class="rvtt-sheet-hp-card">
+        <label
+          class="rvtt-sheet-label rvtt-sheet-label--accent"
+          label="Hit Points"
+        ></label>
+        <div class="rvtt-sheet-hp-row">
+          <numberfield
+            class="rvtt-sheet-hp-current"
+            field="curhp"
+            size="xs"
+            hidecontrols="true"
+            width="48px"
+            placeholder="0"
+            inputcolor="red"
+          ></numberfield>
+          <span class="rvtt-sheet-hp-divider">/</span>
+          <numberfield
+            class="rvtt-sheet-hp-max"
+            field="hitpoints"
+            size="xs"
+            hidecontrols="true"
+            width="48px"
+            placeholder="0"
+            inputcolor="green"
+          ></numberfield>
+        </div>
+        <progressbar
+          class="rvtt-sheet-hp-bar"
+          field="curhp"
+          currentvaluefield="curhp"
+          maxvaluefield="hitpoints"
+          color="health"
+          size="xs"
+        ></progressbar>
       </div>
 
-      <div>
-        <numberfield field="hitpoints" label="Max Hit Points" placeholder="0">
-        </numberfield>
-      </div>
-    </div>
-
-    <div style="width: 100%">
       <stringfield
-        field="title"
-        placeholder="Class / Title  Level"
+        field="senses"
+        size="xs"
+        label="Senses"
+        placeholder="None"
+      ></stringfield>
+      <stringfield
+        field="size"
+        size="xs"
+        label="Size"
+        placeholder="Medium"
       ></stringfield>
     </div>
+  </div>
 
-    <div style="display: flex; flex-direction: row; gap: 4px">
-      <stringfield field="senses" placeholder="Senses"></stringfield>
-      <stringfield field="size" placeholder="Size"></stringfield>
+  <!-- ===== INITIATIVE ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label"
+        >&#10022; Initiative &#10022;</span
+      >
+    </div>
+
+    <div style="display: flex; gap: 8px; align-items: flex-end">
+      <div style="flex: 1">
+        <stringfield
+          onclick="rollInit()"
+          field="initRoll"
+          label="Initiative Roll"
+          placeholder="Enter dice string..."
+          size="xs"
+          width="100%"
+        ></stringfield>
+      </div>
+      <button
+        field="rollInitBtn"
+        size="xs"
+        icon="IconDice"
+        label="Roll"
+        variant="outline"
+        onclick="rollInit()"
+      ></button>
     </div>
   </div>
-</div>
 
-<div style="display: flex; flex-direction: row">
-  <div style="width: 150px">
-    <numberfield field="xp" label="XP" placeholder="0"></numberfield>
+  <!-- ===== ATTRIBUTES ===== -->
+  <div class="rvtt-sheet-section rvtt-sheet-corners">
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--tr"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--bl"></span>
+    <span class="rvtt-sheet-corner rvtt-sheet-corner--br"></span>
+
+    <div class="rvtt-sheet-divider">
+      <span class="rvtt-sheet-divider__label"
+        >&#10022; Attributes &#10022;</span
+      >
+    </div>
+
+    <list
+      listtype="attributes_list"
+      field="attributes_list"
+      variant="standard"
+    ></list>
   </div>
-
-  <div style="margin-left: 8px">
-    <stringfield
-      onclick="rollInit();"
-      field="initRoll"
-      label="Initiative Roll"
-      placeholder="Enter dice string..."
-    ></stringfield>
-  </div>
-
-  <div style="margin-left: 8px; margin-top: auto">
-    <button
-      field="rollInitBtn"
-      icon="IconDice"
-      label="Roll"
-      onclick="rollInit();"
-    ></button>
-  </div>
-</div>
-
-<div
-  style="display: flex; margin-top: 8px; flex-direction: column; flex-grow: 1"
->
-  <list
-    listtype="attributes_list"
-    field="attributes_list"
-    variant="standard"
-    label="Attributes"
-  ></list>
 </div>
