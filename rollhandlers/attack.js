@@ -1,10 +1,17 @@
 // Here we need to determine if it was a hit or miss and display in the chat.
+const name = data.roll?.metadata?.name;
 const tags = [
   {
     name: "Attack",
     tooltip: "Attack Roll",
   },
 ];
+if (name) {
+  tags.push({
+    name: name,
+    tooltip: `${name} Attack Roll`,
+  });
+}
 
 const mods = data.roll?.metadata?.modifiers || [];
 const animation = data.roll?.metadata?.animation;

@@ -67,6 +67,7 @@
       targetId = targets[0].token?._id;
     }
     const metadata = {
+      name: name,
       animation: animation && animation.animationName ? animation : undefined,
       tokenId: ourTokenId,
       targetId: targetId,
@@ -78,7 +79,7 @@
         `${roll}`,
         modifiers,
         metadata,
-        "ability"
+        "ability",
       );
     }
   }
@@ -104,7 +105,7 @@
       variant="default"
       options='[{"icon": "IconDice", "label": "Roll", "value": "roll"}]'
       onchange=""
-      onclick="onRoll();"
+      onclick="onRoll()"
     ></iconbutton>
   </div>
 </div>

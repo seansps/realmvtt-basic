@@ -57,6 +57,7 @@
         atkRoll,
         modifiers,
         {
+          name: name,
           animation:
             animation && animation.animationName ? animation : undefined,
           tokenId: ourTokenId,
@@ -121,7 +122,13 @@
       });
     });
 
-    api.promptRoll(`Damage (${name})`, dmgRoll, modifiers, {}, "damage");
+    api.promptRoll(
+      `Damage (${name})`,
+      dmgRoll,
+      modifiers,
+      { name: name },
+      "damage",
+    );
   }
 </script>
 

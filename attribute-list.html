@@ -1,0 +1,57 @@
+<script>
+  function onRoll() {
+    const name = data.name;
+    let value = data.data.value;
+    if (value === undefined) {
+      value = 0;
+    }
+    const roll = data.data.roll;
+    const addSubValue = data.data.addSubValue;
+    let modifiers = [];
+    if (addSubValue === "Add Value") {
+      modifiers.push({
+        name: name,
+        type: "attribute",
+        value: value,
+        active: true,
+      });
+    } else if (addSubValue === "Subtract Value") {
+      modifiers.push({
+        name: name,
+        type: "attribute",
+        value: value * -1,
+        active: true,
+      });
+    }
+    if (roll) {
+      api.promptRoll(
+        `Attribute (${name})`,
+        `${roll}`,
+        modifiers,
+        { name: name },
+        "attribute",
+      );
+    }
+  }
+</script>
+
+<div style="display: flex; flex-direction: row; width: 100px">
+  <div style="display: flex; flex-direction: column">
+    <div style="width: 100px">
+      <namefield
+        placeholder="Attribute Name"
+        field="namefield"
+        variant="unstyled"
+      ></namefield>
+    </div>
+    <div style="">
+      <numberfield
+        size="lg"
+        field="value"
+        label="Value"
+        variant="tooltip"
+        onclick="onRoll()"
+      ></numberfield>
+    </div>
+  </div>
+</div>

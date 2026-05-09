@@ -1,19 +1,22 @@
-const name = data?.roll?.metadata?.data?.name;
+const name = data?.roll?.metadata?.name;
 const animation = data?.roll?.metadata?.animation;
 const tokenId = data?.roll?.metadata?.tokenId;
 const targetId = data?.roll?.metadata?.targetId;
 
-api.sendMessage(
-  "",
-  data.roll,
-  [],
-  [
-    {
-      name: name || "Ability",
-      tooltip: `${name || ""} Ability Roll`,
-    },
-  ]
-);
+const tags = [
+  {
+    name: "Ability",
+    tooltip: "Ability Roll",
+  },
+];
+if (name) {
+  tags.push({
+    name: name,
+    tooltip: `${name} Ability Roll`,
+  });
+}
+
+api.sendMessage("", data.roll, [], tags);
 
 if (animation && tokenId) {
   if (
